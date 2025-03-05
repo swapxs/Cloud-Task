@@ -1,15 +1,15 @@
 Task 1: Docker:
-1. Containerize a Static Web application using Nginx docker image.
+1.1. Containerize a Static Web application using Nginx docker image.
     Note:
         a. Contents of Web Application should persist on Container restarts.
         b. When we hit the IP on browser a message of "Welcome to XenonStack" must be visible. 
-2. Dockerize Notejam Application using any one of the Web Framework.
+1.2. Dockerize Notejam Application using any one of the Web Framework.
     URL: https://github.com/komarserjio/notejam
     Note: Web Application should connect with external Database.
     a. Create an image and push to Docker hub
     b. Create the deployment from this image
 
-5. Docker exercises - Lightenna
+1.5. Docker exercises - Lightenna
 
 Task 2: Kubernetes:
 1. Containerize the Notejam application (or the application which you dockerise in week1), ensuring separate images for the application and database components.
