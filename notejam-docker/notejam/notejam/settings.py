@@ -1,25 +1,25 @@
 import os
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 TEMPLATE_DEBUG = DEBUG
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 PROJECT_DIR = "{}/../".format(os.path.dirname(__file__))
 
 ADMINS = (
-    ('Sergey Komar', 'komarserjio@gmail.com'),
+    ('Swapnil', 'swapxs@xenonstack.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'notejam.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PSQL_DB_NAME', 'notejam'),
+        'USER': os.getenv('PSQL_USERNAME', 'postgres'),
+        'PASSWORD': os.getenv('PSQL_PASSWD', 'postgres'),
+        'HOST': os.getenv('PSQL_DB_HOST', 'db'),
+        'PORT': os.getenv('PSQL_PORT', '5432'),
     }
 }
 
@@ -27,7 +27,7 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/Kiev'
+TIME_ZONE = 'Asia/Kolkata'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -79,7 +79,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'g+cy2q816xje*f#k=9z!e*t%h-7tt(tbo$q^1n)l0gd1=x8$65'
+SECRET_KEY = os.getenv('SECRET_KEY', 'yFdFYoN/TNCFJeyNRgRkIgBIjUspIV+nU4kiD+yZlNg=')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
