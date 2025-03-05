@@ -9,9 +9,6 @@ Task 1: Docker:
     a. Create an image and push to Docker hub
     b. Create the deployment from this image
 
-1.5. Docker exercises - Lightenna (docker-exercise)
-
-
 Task 2: Kubernetes:
 1. Containerize the Notejam application (or the application which you dockerise in week1), ensuring separate images for the application and database components.
 2. Create a Deployment for the application to ensure its availability and scalability.
