@@ -1,0 +1,25 @@
+services:
+  db:
+    image: swapxs/notejam-db
+    container_name: notejam-db
+    restart: always
+    environment:
+      POSTGRES_DB: notejam
+      POSTGRES_USER: notejam_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  web:
+    image: swapxs/notejam-xs
+    container_name: notejam-app
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DB_NAME: notejam
+      DB_USER: notejam_user
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
