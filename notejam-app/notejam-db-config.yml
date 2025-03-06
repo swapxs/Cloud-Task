@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notejam-config
+  namespace: notejam
+data:
+  DB_NAME: notejam
+  DB_HOST: notejam-db
+  DB_PORT: "5432"
+
