@@ -1,5 +1,5 @@
 FROM python:2.7
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 WORKDIR /app/notejam
 COPY . /app/
 RUN pip install --no-cache-dir -r requirements.txt
