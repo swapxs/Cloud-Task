@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:9.4
+    container_name: notejam-db
+    restart: always
+    environment:
+      POSTGRES_DB: notejam
+      POSTGRES_USER: notejam_user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    container_name: notejam-app
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DB_NAME: notejam
+      DB_USER: notejam_user
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+volumes:
+  db_data:
+
