@@ -1,19 +1,17 @@
 services:
   db:
-    image: postgres:9.4
+    image: swapxs/notejam-db
     container_name: notejam-db
     restart: always
     environment:
       POSTGRES_DB: notejam
       POSTGRES_USER: notejam_user
       POSTGRES_PASSWORD: password
-    volumes:
-      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   web:
-    build: .
+    image: swapxs/notejam-xs
     container_name: notejam-app
     depends_on:
       - db
@@ -26,6 +24,3 @@ services:
       DB_HOST: db
       DB_PORT: 5432
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-volumes:
-  db_data:
