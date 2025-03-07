@@ -5,12 +5,12 @@ metadata:
   namespace: notejam
   annotations:
     ingressClassName: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: "/"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
       paths:
-      - path: /notejam
+      - path: /
         pathType: Prefix
         backend:
           service:
