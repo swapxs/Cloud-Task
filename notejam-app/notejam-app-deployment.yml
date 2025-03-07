@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notejam-app-deployment
+  namespace: notejam
+  labels:
+    app: notejam-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: notejam-app
+  template:
+    metadata:
+      labels:
+        app: notejam-app
+    spec:
+      initContainers:
+      - name: db-readiness-probe
+        image: postgres:9.4
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_HOST
+          value: notejam-db-statefulset.notejam.svc.cluster.local
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_name
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: notejam-secret
+              key: db_password
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_port
+        command:
+          - /bin/sh
+          - -c
+          - |
+            #!/bin/sh
+            export PGPASSWORD="$DB_PASSWORD"
+
+            until psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c '\q'; do
+              echo "Database not yet ready - waiting..."
+              sleep 2
+            done
+
+            echo "Database is ready!"
+      containers:
+      - name: notejam-app
+        image: swapxs/notejam-xs
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_HOST
+          value: notejam-db-statefulset.notejam.svc.cluster.local
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_name
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: notejam-secret
+              key: db_password
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: notejam-config
+              key: db_port
