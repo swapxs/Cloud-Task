@@ -52,7 +52,7 @@ server {
 EOF
 
     sudo ln -sf /etc/nginx/sites-available/minikube.conf /etc/nginx/sites-enabled/minikube.conf
-    sudo rm /etc/nginx/sites-enabled/default
+    # sudo rm /etc/nginx/sites-enabled/default
     sudo systemctl restart nginx
     printf "\nNGINX reverse proxy is configured to forward traffic from this server to http://$MINIKUBE_IP\n"
 }
@@ -115,8 +115,8 @@ kubectl wait --for=condition=ready pod -l app=notejam-app -n $NAMESPACE --timeou
 printf "\nRunning database migrations..."
 kubectl exec -n $NAMESPACE -it $(kubectl get pod -n $NAMESPACE -l app=notejam-app -o jsonpath="{.items[0].metadata.name}") -- python manage.py migrate
 
-printf "\nUpdating /etc/hosts to access Notejam locally..."
-printf "%s\t%s\n" "$(minikube ip)" "note.xenon.local" | sudo tee -a /etc/hosts
+# printf "\nUpdating /etc/hosts to access Notejam locally..."
+# printf "%s\t%s\n" "$(minikube ip)" "note.xenon.local" | sudo tee -a /etc/hosts
 
 install_nginx
 configure_reverse_proxy
