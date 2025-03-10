@@ -21,6 +21,41 @@ install_minikube() {
     sudo install minikube-linux-amd64 /usr/local/bin/minikube
 }
 
+install_nginx() {
+    printf "\nChecking for NGINX installation..."
+    if ! command_exists nginx; then
+        printf "\nNGINX not found. Installing..."
+        sudo apt-get update
+        sudo apt-get install -y nginx
+    else
+        printf "\nNGINX is already installed."
+    fi
+}
+
+configure_reverse_proxy() {
+    printf "\nConfiguring NGINX reverse proxy..."
+
+    MINIKUBE_IP="$(minikube ip)"
+
+    sudo tee /etc/nginx/sites-available/minikube.conf >/dev/null <<EOF
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass http://$MINIKUBE_IP;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+EOF
+
+    sudo ln -sf /etc/nginx/sites-available/minikube.conf /etc/nginx/sites-enabled/minikube.conf
+    sudo systemctl restart nginx
+    printf "\nNGINX reverse proxy is configured to forward traffic from this server to http://$MINIKUBE_IP\n"
+}
+
 if ! command_exists kubectl; then
     install_kubectl
 else
@@ -82,5 +117,7 @@ kubectl exec -n $NAMESPACE -it $(kubectl get pod -n $NAMESPACE -l app=notejam-ap
 printf "\nUpdating /etc/hosts to access Notejam locally..."
 printf "%s\t%s\n" "$(minikube ip)" "note.xenon.local" | sudo tee -a /etc/hosts
 
+install_nginx
+configure_reverse_proxy
 printf "\n\nDeployment Completed Successfully!"
 printf "\nAccess Notejam at: http://note.xenon.local\n"
