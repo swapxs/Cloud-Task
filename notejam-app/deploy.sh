@@ -52,6 +52,7 @@ server {
 EOF
 
     sudo ln -sf /etc/nginx/sites-available/minikube.conf /etc/nginx/sites-enabled/minikube.conf
+    sudo rm /etc/nginx/sites-enabled/default
     sudo systemctl restart nginx
     printf "\nNGINX reverse proxy is configured to forward traffic from this server to http://$MINIKUBE_IP\n"
 }
