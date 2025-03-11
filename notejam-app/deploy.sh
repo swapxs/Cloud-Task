@@ -52,7 +52,7 @@ server {
 EOF
 
     sudo ln -sf /etc/nginx/sites-available/minikube.conf /etc/nginx/sites-enabled/minikube.conf
-    # sudo rm /etc/nginx/sites-enabled/default
+    sudo rm /etc/nginx/sites-enabled/default
     sudo systemctl restart nginx
     printf "\nNGINX reverse proxy is configured to forward traffic from this server to http://$MINIKUBE_IP\n"
 }
@@ -95,15 +95,15 @@ kubectl apply -f manifests/configmap-manifest.yml -n ${NAMESPACE}
 kubectl apply -f manifests/secret-manifest.yml -n ${NAMESPACE}
 kubectl apply -f manifests/pv-manifest.yml -n ${NAMESPACE}
 kubectl apply -f manifests/db-statefulset-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/app--manifestdeployment.yml -n ${NAMESPACE}
+kubectl apply -f manifests/app-deployment-manifest.yml -n ${NAMESPACE}
 kubectl apply -f manifests/app-service-manifest.yml -n ${NAMESPACE}
 
 printf "\nApplying Ingress..."
-if ! kubectl apply -f ingress-manifest.yml -n ${NAMESPACE}; then
+if ! kubectl apply -f manifests/ingress-manifest.yml -n ${NAMESPACE}; then
     kubectl delete validatingwebhookconfiguration ingress-nginx-admission --ignore-not-found=true
     kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
     sleep 10
-    kubectl apply -f ingress-manifest.yml -n ${NAMESPACE}
+    kubectl apply -f manifests/ingress-manifest.yml -n ${NAMESPACE}
 fi
 
 printf "\nWaiting for PostgreSQL to be ready..."
