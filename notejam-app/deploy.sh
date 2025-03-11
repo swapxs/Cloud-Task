@@ -91,19 +91,19 @@ if ! kubectl create namespace ${NAMESPACE} 2>/dev/null; then
     printf "\nNamespace already exists."
 fi
 
-kubectl apply -f notejam-configmap.yml -n ${NAMESPACE}
-kubectl apply -f notejam-secret.yml -n ${NAMESPACE}
-kubectl apply -f notejam-pv.yml -n ${NAMESPACE}
-kubectl apply -f notejam-db-statefulset.yml -n ${NAMESPACE}
-kubectl apply -f notejam-app-deployment.yml -n ${NAMESPACE}
-kubectl apply -f notejam-app-service.yml -n ${NAMESPACE}
+kubectl apply -f manifests/configmap-manifest.yml -n ${NAMESPACE}
+kubectl apply -f manifests/secret-manifest.yml -n ${NAMESPACE}
+kubectl apply -f manifests/pv-manifest.yml -n ${NAMESPACE}
+kubectl apply -f manifests/db-statefulset-manifest.yml -n ${NAMESPACE}
+kubectl apply -f manifests/app--manifestdeployment.yml -n ${NAMESPACE}
+kubectl apply -f manifests/app-service-manifest.yml -n ${NAMESPACE}
 
 printf "\nApplying Ingress..."
-if ! kubectl apply -f notejam-ingress.yml -n ${NAMESPACE}; then
+if ! kubectl apply -f ingress-manifest.yml -n ${NAMESPACE}; then
     kubectl delete validatingwebhookconfiguration ingress-nginx-admission --ignore-not-found=true
     kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
     sleep 10
-    kubectl apply -f notejam-ingress.yml -n ${NAMESPACE}
+    kubectl apply -f ingress-manifest.yml -n ${NAMESPACE}
 fi
 
 printf "\nWaiting for PostgreSQL to be ready..."
