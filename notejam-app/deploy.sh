@@ -91,7 +91,7 @@ if ! kubectl create namespace ${NAMESPACE} 2>/dev/null; then
     printf "\nNamespace already exists."
 fi
 
-sudo mkdir /data/notejam-db/
+sudo mkdir -p /data/notejam-db/
 sudo chown postgres:postgres /data/notejam-db/
 sudo chmod 700 /data/notejam-db
 
