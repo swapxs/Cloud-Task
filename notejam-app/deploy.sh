@@ -91,7 +91,9 @@ if ! kubectl create namespace ${NAMESPACE} 2>/dev/null; then
     printf "\nNamespace already exists."
 fi
 
-sudo mkdir -p /data/notejam-db/
+minikube ssh -- "sudo mkdir -p /data/notejam-db/"
+minikube ssh -- "sudo chown 999:999 /data/notejam-db/"
+minikube ssh -- "sudo chmod 700 /data/notejam-db/"
 
 kubectl apply -f manifests/ -n ${NAMESPACE}
 
