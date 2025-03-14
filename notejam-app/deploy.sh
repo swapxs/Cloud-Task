@@ -92,8 +92,6 @@ if ! kubectl create namespace ${NAMESPACE} 2>/dev/null; then
 fi
 
 sudo mkdir -p /data/notejam-db/
-sudo chown postgres:postgres /data/notejam-db/
-sudo chmod 700 /data/notejam-db
 
 kubectl apply -f manifests/ -n ${NAMESPACE}
 
