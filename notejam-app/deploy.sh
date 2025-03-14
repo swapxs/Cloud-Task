@@ -91,12 +91,11 @@ if ! kubectl create namespace ${NAMESPACE} 2>/dev/null; then
     printf "\nNamespace already exists."
 fi
 
-kubectl apply -f manifests/configmap-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/secret-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/pv-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/db-statefulset-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/app-deployment-manifest.yml -n ${NAMESPACE}
-kubectl apply -f manifests/app-service-manifest.yml -n ${NAMESPACE}
+sudo mkdir /data/notejam-db/
+sudo chown postgres:postgres /data/notejam-db/
+sudo chmod 700 /data/notejam-db
+
+kubectl apply -f manifests/ -n ${NAMESPACE}
 
 printf "\nApplying Ingress..."
 if ! kubectl apply -f manifests/ingress-manifest.yml -n ${NAMESPACE}; then
