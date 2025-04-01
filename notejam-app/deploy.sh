@@ -121,3 +121,5 @@ install_nginx
 configure_reverse_proxy
 printf "\n\nDeployment Completed Successfully!"
 printf "\nAccess Notejam at: http://note.xenon.local\n"
+
+printf "        *       *       []\\n         _*    *_       ||\\n        |*|    |*|      ||\\n        |_|    |_|     |  |\\n        \\*/    \\*/     |__|\\n         |      |      |  |\\n        _|_    _|_     |__|\\n"
